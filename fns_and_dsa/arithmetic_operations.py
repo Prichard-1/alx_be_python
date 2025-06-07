@@ -1,5 +1,5 @@
 ithmetic_operations.py
-def perform_operation(num1:float, num2:float, operation):
+def perform_operation(num1, num2, operation):
     """performs basic arithmetic operations based on operation parameter."""
     if operation=="add":
         return num1 + num2
