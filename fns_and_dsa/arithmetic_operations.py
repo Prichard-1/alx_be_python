@@ -8,7 +8,7 @@ def perform_operation(num1, num2, operation):
     elif operation=="multipy":
         return num1 * num2
     elif operation=="devide"
-         if num2=0:
+         if num2 == 0: # Division check
              return "error: Division by zero is not allowed."
          return num1/num2
     else:
