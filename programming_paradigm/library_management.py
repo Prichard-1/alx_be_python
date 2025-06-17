@@ -1,37 +1,32 @@
-import unittest
-from simple_calculator import SimpleCalculator
+class BankAccount:
+    """Represents a simple bank account with deposit, withdraw, and balance display functionalities."""
 
-class TestSimpleCalculator(unittest.TestCase):
-    """Unit tests for SimpleCalculator class."""
+    def __init__(self, initial_balance=0.0):
+        """Initialize a new bank account with an optional starting balance."""
+        if initial_balance < 0:
+            raise ValueError("Initial balance cannot be negative.")
+        self.account_balance = initial_balance
 
-    def setUp(self):
-        """Set up the SimpleCalculator instance before each test."""
-        self.calc = SimpleCalculator()
+    def deposit(self, amount):
+        """Deposit a positive amount into the account."""
+        if amount <= 0:
+            print("Deposit amount must be positive.")
+            return False
+        self.account_balance += amount
+        return True
 
-    def test_addition(self):
-        """Test addition method."""
-        self.assertEqual(self.calc.add(2, 3), 5)
-        self.assertEqual(self.calc.add(-1, 1), 0)
-        self.assertEqual(self.calc.add(0, 0), 0)
+    def withdraw(self, amount):
+        """Withdraw a specified amount if sufficient funds are available."""
+        if amount <= 0:
+            print("Withdrawal amount must be positive.")
+            return False
+        if amount > self.account_balance:
+            print("Insufficient funds.")
+            return False
+        self.account_balance -= amount
+        return True
 
-    def test_subtraction(self):
-        """Test subtraction method."""
-        self.assertEqual(self.calc.subtract(5, 3), 2)
-        self.assertEqual(self.calc.subtract(0, 1), -1)
-        self.assertEqual(self.calc.subtract(-1, -1), 0)
-
-    def test_multiplication(self):
-        """Test multiplication method."""
-        self.assertEqual(self.calc.multiply(2, 3), 6)
-        self.assertEqual(self.calc.multiply(-1, 1), -1)
-        self.assertEqual(self.calc.multiply(0, 5), 0)
-
-    def test_division(self):
-        """Test division method."""
-        self.assertEqual(self.calc.divide(6, 3), 2)
-        self.assertEqual(self.calc.divide(-10, 2), -5)
-        self.assertIsNone(self.calc.divide(5, 0))  # Handling division by zero
-
-if __name__ == "__main__":
-    unittest.main()
+    def display_balance(self):
+        """Display the current account balance."""
+        print(f"Current Balance: ${self.account_balance:.2f}")
 
