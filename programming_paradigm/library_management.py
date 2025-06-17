@@ -1,32 +1,75 @@
-class BankAccount:
-    """Represents a simple bank account with deposit, withdraw, and balance display functionalities."""
+class Book:
+    """Represents a book with a title, author, and availability status."""
 
-    def __init__(self, initial_balance=0.0):
-        """Initialize a new bank account with an optional starting balance."""
-        if initial_balance < 0:
-            raise ValueError("Initial balance cannot be negative.")
-        self.account_balance = initial_balance
+    def __init__(self, title, author):
+        """Initialize a new book with a title and author, marked as available."""
+        self.title = title
+        self.author = author
+        self._is_checked_out = False  # Private attribute to track availability
 
-    def deposit(self, amount):
-        """Deposit a positive amount into the account."""
-        if amount <= 0:
-            print("Deposit amount must be positive.")
-            return False
-        self.account_balance += amount
+    def check_out(self):
+        """Mark the book as checked out if it's available."""
+        if self._is_checked_out:
+            return False  # Already checked out
+        self._is_checked_out = True
         return True
 
-    def withdraw(self, amount):
-        """Withdraw a specified amount if sufficient funds are available."""
-        if amount <= 0:
-            print("Withdrawal amount must be positive.")
-            return False
-        if amount > self.account_balance:
-            print("Insufficient funds.")
-            return False
-        self.account_balance -= amount
+    def return_book(self):
+        """Return the book, making it available again."""
+        if not self._is_checked_out:
+            return False  # Already available
+        self._is_checked_out = False
         return True
 
-    def display_balance(self):
-        """Display the current account balance."""
-        print(f"Current Balance: ${self.account_balance:.2f}")
+    def __str__(self):
+        """Return a string representation of the book."""
+        status = "Checked Out" if self._is_checked_out else "Available"
+        return f"'{self.title}' by {self.author} - {status}"
+
+
+class Library:
+    """Represents a library that manages a collection of books."""
+
+    def __init__(self):
+        """Initialize the library with an empty list of books."""
+        self._books = []  # Private list to store book objects
+
+    def add_book(self, book):
+        """Add a book to the library collection."""
+        self._books.append(book)
+
+    def check_out_book(self, title):
+        """Find a book by title and check it out if available."""
+        for book in self._books:
+            if book.title.lower() == title.lower():
+                if book.check_out():
+                    print(f"Successfully checked out: '{title}'")
+                    return
+                else:
+                    print(f"'{title}' is already checked out.")
+                    return
+        print(f"Book '{title}' not found.")
+
+    def return_book(self, title):
+        """Find a book by title and return it if checked out."""
+        for book in self._books:
+            if book.title.lower() == title.lower():
+                if book.return_book():
+                    print(f"Successfully returned: '{title}'")
+                    return
+                else:
+                    print(f"'{title}' was not checked out.")
+                    return
+        print(f"Book '{title}' not found.")
+
+    def list_available_books(self):
+        """Display all books that are currently available."""
+        available_books = [book for book in self._books if not book._is_checked_out]
+        if available_books:
+            print("Available books:")
+            for book in available_books:
+                print(f"- {book.title} by {book.author}")
+        else:
+            print("No books are currently available.")
+
 
